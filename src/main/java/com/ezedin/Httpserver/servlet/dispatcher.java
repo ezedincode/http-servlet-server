@@ -16,8 +16,18 @@ public class dispatcher {
         scanController(basePackage);
     }
     public String dispatch(String httpMethod,String path){
-
-    return "";
+    String key = httpMethod +":"+ path;
+    Method method = routeMethods.get(key);
+    if(method == null){
+        return "404 Not Found";
+    }
+    try{
+    Object controllerInstance = controllers.get(key);
+    Object result = method.invoke(controllerInstance);
+    return result.toString();
+    }catch (Exception e){
+        return "500 Internal Server Error";
+    }
     }
     private void scanController(String basePackage){
         Reflections reflections = new Reflections(basePackage);
@@ -29,7 +39,7 @@ public class dispatcher {
                 if(method.isAnnotationPresent(customGet.class)){
                     if(instance == null) instance = createInstance(clazz);
                     String path = method.getAnnotation(customGet.class).value();
-                    String key = "GET: "+path;
+                    String key = "GET:"+path;
                     routeMethods.put(key,method);
                     controllers.put(key,instance);
                 }
