@@ -37,8 +37,20 @@ public class httpServerConnection extends Thread {
                     inputStringBuilder.append((char)bufferdReader.read());
                 }
                 request = httpRequest.withBody(request,inputStringBuilder.toString());
+
             }
 
+
+        }catch (IOException e){
+            e.getMessage();
+        }finally {
+            try {
+                if (socket != null) {
+                    socket.close();
+                }
+            } catch (IOException e) {
+                e.getMessage();
+            }
         }
 
     }

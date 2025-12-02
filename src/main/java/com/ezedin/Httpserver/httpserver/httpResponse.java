@@ -27,7 +27,7 @@ public static httpResponse basic(HttpStatus httpstatus, Map<String, String> head
     return new httpResponse(httpstatus, header, body);
 }
 public String createHttpResponseMsg(){
-    var strBuilder = new StringBuilder("%s %s %s\r\n".formatted(commonConstants.DEFAULT_HTTP_VERSION, httpStatus.getHttpStatusCode(), httpStatus.getMessage()));
+    var strBuilder = new StringBuilder("%s %s %s\r\n".formatted(commonConstants.DEFAULT_HTTP_VERSION, httpstatus.getStatusCode(), httpstatus.getMessage()));
 
     for (var headerEntry : header.entrySet()) {
         strBuilder.append(String.format("%s: %s\r\n", headerEntry.getKey(), headerEntry.getValue()));

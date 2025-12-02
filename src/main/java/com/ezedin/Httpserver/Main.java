@@ -2,6 +2,7 @@ package com.ezedin.Httpserver;
 
 
 import com.ezedin.Httpserver.httpserver.connectionUtil.httpConnectionUtil;
+import com.ezedin.Httpserver.httpserver.connections.httpServerConnection;
 
 import java.io.IOException;
 
@@ -13,7 +14,8 @@ public class Main {
 		var serverSocket = httpConnectionUtil.createHttpServerSocket(DEFAULT_PORT);
 		while (true) {
 			var clientSocket = serverSocket.accept();
-
+			var httpConnection = new httpServerConnection(clientSocket);
+			httpConnection.start();
 		}
 	}
 

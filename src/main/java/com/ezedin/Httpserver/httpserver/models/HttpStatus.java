@@ -19,4 +19,10 @@ public enum HttpStatus {
         this.statusCode=statusCode;
         this.statusMessage=statusMessage;
     }
+    public  String getStatusCode(){
+        return statusCode;
+    }
+    public  String getMessage(){
+        return statusMessage;
+    }
 }
