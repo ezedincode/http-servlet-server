@@ -11,7 +11,7 @@ public record httpRequest(
         String body
 ) {
 
-    public static  httpRequest withBody(httpRequest request,String body) {
+    public static   httpRequest withBody(httpRequest request,String body) {
         return new httpRequest(request.httpMethod,request.Path,request.httpProtocolVersion,request.headers,body);
     }
 }

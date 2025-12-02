@@ -1,5 +1,9 @@
 package com.ezedin.Httpserver.httpserver.connections;
 
+import com.ezedin.Httpserver.httpserver.httpDataUtil;
+import com.ezedin.Httpserver.httpserver.httpRequest;
+import com.ezedin.Httpserver.httpserver.models.HttpMethod;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -21,6 +25,19 @@ public class httpServerConnection extends Thread {
                 ){
             String inputLine;
             var startLine = bufferdReader.readLine();
+            var request = httpDataUtil.parseBasicHttpRequest(startLine);
+            while((inputLine = bufferdReader.readLine()) != null && !(inputLine.isEmpty())){
+                var data = inputLine.split(": ");
+                request.headers().put(data[0], data[1]);
+            }
+            if(request.httpMethod() == HttpMethod.POST){
+                var size = Integer.parseInt(request.headers().getOrDefault("Content-Length", "0"));
+                var inputStringBuilder = new StringBuilder();
+                for(int i = 0; i < size; i++){
+                    inputStringBuilder.append((char)bufferdReader.read());
+                }
+                request = httpRequest.withBody(request,inputStringBuilder.toString());
+            }
 
         }
 
