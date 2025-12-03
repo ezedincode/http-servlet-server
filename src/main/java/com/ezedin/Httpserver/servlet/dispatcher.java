@@ -18,7 +18,10 @@ public class dispatcher {
     }
     public String dispatch(HttpMethod httpMethod, String path){
     String key = httpMethod.toString() +":"+ path;
+        System.out.println(key);
     Method method = routeMethods.get(key);
+        System.out.println(method);
+        System.out.println(controllers.get(key));
     if(method == null){
         return "404 Not Found";
     }
