@@ -1,5 +1,6 @@
 package com.ezedin.Httpserver.servlet;
 
+import com.ezedin.Httpserver.httpserver.models.HttpMethod;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -15,8 +16,8 @@ public class dispatcher {
     public dispatcher(String basePackage) {
         scanController(basePackage);
     }
-    public String dispatch(String httpMethod,String path){
-    String key = httpMethod +":"+ path;
+    public String dispatch(HttpMethod httpMethod, String path){
+    String key = httpMethod.toString() +":"+ path;
     Method method = routeMethods.get(key);
     if(method == null){
         return "404 Not Found";

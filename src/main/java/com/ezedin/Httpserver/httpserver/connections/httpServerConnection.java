@@ -6,15 +6,20 @@ import com.ezedin.Httpserver.httpserver.models.HttpMethod;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.http.HttpResponse;
 import java.util.logging.Logger;
+import com.ezedin.Httpserver.servlet.dispatcher;
 
 public class httpServerConnection extends Thread {
     private final Socket socket;
     private final Logger logger = Logger.getLogger(this.getName());
+    private final dispatcher dispatcher;
 
-    public httpServerConnection(Socket socket) {
+    public httpServerConnection(Socket socket,dispatcher dispatchers) {
         this.socket = socket;
+        this.dispatcher = dispatchers;
     }
+
     @Override
     public void run() {
         try(
@@ -37,6 +42,7 @@ public class httpServerConnection extends Thread {
                     inputStringBuilder.append((char)bufferdReader.read());
                 }
                 request = httpRequest.withBody(request,inputStringBuilder.toString());
+                var response = dispatcher.dispatch(request.httpMethod(),request.Path());
 
             }
 
