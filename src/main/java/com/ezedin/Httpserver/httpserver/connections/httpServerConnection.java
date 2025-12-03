@@ -2,12 +2,14 @@ package com.ezedin.Httpserver.httpserver.connections;
 
 import com.ezedin.Httpserver.httpserver.httpDataUtil;
 import com.ezedin.Httpserver.httpserver.httpRequest;
+import com.ezedin.Httpserver.httpserver.httpResponse;
 import com.ezedin.Httpserver.httpserver.models.HttpMethod;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.http.HttpResponse;
 import java.util.logging.Logger;
+
+import com.ezedin.Httpserver.httpserver.models.HttpStatus;
 import com.ezedin.Httpserver.servlet.dispatcher;
 
 public class httpServerConnection extends Thread {
@@ -42,7 +44,19 @@ public class httpServerConnection extends Thread {
                     inputStringBuilder.append((char)bufferdReader.read());
                 }
                 request = httpRequest.withBody(request,inputStringBuilder.toString());
-                var response = dispatcher.dispatch(request.httpMethod(),request.Path());
+                var body = dispatcher.dispatch(request.httpMethod(),request.Path());
+                httpResponse response;
+                if(body.startsWith("404")){
+                     response = httpResponse.basic(HttpStatus.NOT_FOUND,body);
+                }
+                else if(body.startsWith("500")){
+                    response = httpResponse.basic(HttpStatus.INTERNAL_SERVER_ERROR,body);
+                }else{
+                    response = httpResponse.basic(HttpStatus.OK,body);
+                }
+
+                var httpFormatResponse =response.createHttpResponseMsg();
+                bufferedWriter.write(httpFormatResponse);
 
             }
 

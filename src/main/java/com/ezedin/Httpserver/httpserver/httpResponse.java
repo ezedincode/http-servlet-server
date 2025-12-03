@@ -26,6 +26,7 @@ public static httpResponse basic(HttpStatus httpstatus, Map<String, String> head
     }
     return new httpResponse(httpstatus, header, body);
 }
+
 public String createHttpResponseMsg(){
     var strBuilder = new StringBuilder("%s %s %s\r\n".formatted(commonConstants.DEFAULT_HTTP_VERSION, httpstatus.getStatusCode(), httpstatus.getMessage()));
 
