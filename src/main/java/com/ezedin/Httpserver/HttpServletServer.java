@@ -8,7 +8,8 @@ import java.io.IOException;
 
 import static com.ezedin.Httpserver.httpserver.commonConstants.DEFAULT_PORT;
 
-public class Main {
+public class HttpServeltServer {
+
 
 	public static void main(String[] args) throws IOException {
 		var serverSocket = httpConnectionUtil.createHttpServerSocket(DEFAULT_PORT);
