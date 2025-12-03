@@ -10,7 +10,10 @@ public class httpDataUtil {
     }
 
     public static httpRequest parseBasicHttpRequest(String startLine) {
-        var info = startLine.split(":");
+        if (startLine == null || startLine.isBlank()) {
+            throw new IllegalArgumentException("Empty HTTP request (startLine is null)");
+        }
+        var info = startLine.split(" ");
         return new httpRequest(HttpMethod.valueOf(info[0]), info[1], info[2], new HashMap<>(), null);
     }
 }
