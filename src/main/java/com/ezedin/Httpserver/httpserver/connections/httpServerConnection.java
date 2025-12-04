@@ -39,7 +39,7 @@ public class httpServerConnection extends Thread {
 
             if (startLine == null || startLine.isBlank()) {
                 System.out.println(startLine + " in while loop");
-                throw new IllegalArgumentException("Empty HTTP request (startLine is null or blank)");
+                return;
             }
 
             System.out.println("Start line: [" + startLine + "]");
