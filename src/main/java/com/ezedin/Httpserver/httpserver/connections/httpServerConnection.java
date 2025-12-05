@@ -64,9 +64,9 @@ public class httpServerConnection extends Thread {
             System.out.println(body);
 
             httpResponse response;
-            if(body.startsWith("404")){
+            if(body.toString().startsWith("404")){
                 response = httpResponse.basic(HttpStatus.NOT_FOUND, body);
-            } else if(body.startsWith("500")){
+            } else if(body.toString().startsWith("500")){
                 response = httpResponse.basic(HttpStatus.INTERNAL_SERVER_ERROR, body);
             } else {
                 response = httpResponse.basic(HttpStatus.OK, body);

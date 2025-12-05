@@ -16,7 +16,7 @@ public class dispatcher {
     public dispatcher(String basePackage) {
         scanController(basePackage);
     }
-    public String dispatch(HttpMethod httpMethod, String path){
+    public Object dispatch(HttpMethod httpMethod, String path){
     String key = httpMethod.toString() +":"+ path;
         System.out.println(key);
     Method method = routeMethods.get(key);
@@ -27,8 +27,7 @@ public class dispatcher {
     }
     try{
     Object controllerInstance = controllers.get(key);
-    Object result = method.invoke(controllerInstance);
-    return result.toString();
+        return method.invoke(controllerInstance);
     }catch (Exception e){
         return "500 Internal Server Error";
     }
