@@ -17,18 +17,13 @@ import java.util.*;
 public class dispatcher {
     private final Map<String, Method> routeMethods = new HashMap<>();
     private final Map<String, Object> controllers = new HashMap<>();
-    private final String basePackage;
 
     public dispatcher(String basePackage) {
-        this.basePackage = basePackage;
-        scanController(this.basePackage);
+        scanController(basePackage);
     }
     public Object dispatch(httpRequest request, String contentType) {
     String key = request.httpMethod().toString() +":"+ request.Path();
-        System.out.println(key);
     Method method = routeMethods.get(key);
-        System.out.println(method + "methode");
-        System.out.println(controllers.get(key));
     if(method == null){
         return "404 Not Found";
     }
@@ -43,9 +38,7 @@ public class dispatcher {
             for(Parameter p:objectName){
                 String paramName = p.getAnnotation(customRequestBody.class).value();
                 Class<?> paramType = p.getType();
-                System.out.println("param name: "+paramName);
                 JsonNode node =jsonNode.get(paramName);
-                System.out.println(node);
                 if (paramType == String.class) {
                     args[i] = node.asText();
                 } else if (paramType == int.class || paramType == Integer.class) {
@@ -63,8 +56,7 @@ public class dispatcher {
 
 
     }catch (Exception e){
-        System.out.println(e.getMessage());
-        return "500 Internal Server Error test";
+        return "500 Internal Server Error";
     }
     }
     private List<Parameter> findRequestBodyParameter(Method method) {

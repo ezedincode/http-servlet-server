@@ -39,22 +39,17 @@ public class httpServerConnection extends Thread {
 
 
             if (startLine == null || startLine.isBlank()) {
-                System.out.println(startLine + " in while loop");
                 return;
             }
 
-            System.out.println("Start line: [" + startLine + "]");
             var request = httpDataUtil.parseBasicHttpRequest(startLine);
-            System.out.println(request);
             while((inputLine = bufferdReader.readLine()) != null && !(inputLine.isEmpty())){
                 var data = inputLine.split(": ");
                 request.headers().put(data[0], data[1]);
             }
-            System.out.println(request);
             if(request.httpMethod() == HttpMethod.POST){
                 var size = Integer.parseInt(request.headers().getOrDefault("Content-Length", "0"));
                 var inputStringBuilder = new StringBuilder();
-                System.out.println("size : "+size);
                 for(int i = 0; i < size; i++){
                     inputStringBuilder.append((char)bufferdReader.read());
                 }
@@ -63,14 +58,12 @@ public class httpServerConnection extends Thread {
             }
             Object  body;
             if(Objects.equals(request.headers().get("Content-Type"), "application/json")){
-                System.out.println("yes it is json");
                 body = dispatcher.dispatch(request,"json");
             }
             else {
                 body = dispatcher.dispatch(request,"text");
             }
 
-            System.out.println(body);
 
             httpResponse response;
             if(body.toString().startsWith("404")){
@@ -81,7 +74,6 @@ public class httpServerConnection extends Thread {
                 response = httpResponse.basic(HttpStatus.OK, body);
             }
 
-            System.out.println(response);
             var httpFormatResponse = response.createHttpResponseMsg();
             bufferedWriter.write(httpFormatResponse);
             bufferedWriter.flush();

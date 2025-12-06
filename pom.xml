@@ -5,7 +5,7 @@
 
 	<groupId>com.ezedin</groupId>
 	<artifactId>Httpserver</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Httpserver</name>
 	<description>custom http server</description>
 	<url/>
@@ -21,6 +21,12 @@
 		<tag/>
 		<url/>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/ezedincode/http-servlet-server</url>
+		</repository>
+	</distributionManagement>
 	<properties>
 		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
