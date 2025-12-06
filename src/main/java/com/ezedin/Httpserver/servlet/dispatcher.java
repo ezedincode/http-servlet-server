@@ -1,11 +1,10 @@
 package com.ezedin.Httpserver.servlet;
 
 import com.ezedin.Httpserver.httpserver.httpRequest;
-import com.ezedin.Httpserver.httpserver.models.HttpMethod;
 import com.ezedin.Httpserver.servlet.annotations.customController;
 import com.ezedin.Httpserver.servlet.annotations.customGet;
 import com.ezedin.Httpserver.servlet.annotations.customPost;
-import com.ezedin.Httpserver.servlet.annotations.customResponseBody;
+import com.ezedin.Httpserver.servlet.annotations.customRequestBody;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.reflections.Reflections;
@@ -42,7 +41,7 @@ public class dispatcher {
             Object[] args = new Object[objectName.size()];
             int i = 0;
             for(Parameter p:objectName){
-                String paramName = p.getAnnotation(customResponseBody.class).value();
+                String paramName = p.getAnnotation(customRequestBody.class).value();
                 Class<?> paramType = p.getType();
                 System.out.println("param name: "+paramName);
                 JsonNode node =jsonNode.get(paramName);
@@ -71,7 +70,7 @@ public class dispatcher {
     private List<Parameter> findRequestBodyParameter(Method method) {
         List<Parameter> paramList = new ArrayList<>();
         for (Parameter param : method.getParameters()) {
-            if (param.isAnnotationPresent(customResponseBody.class)) {
+            if (param.isAnnotationPresent(customRequestBody.class)) {
                 paramList.add(param);
             }
         }

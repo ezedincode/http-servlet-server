@@ -46,21 +46,16 @@ public class MyController {
 
     @customGet("/hello")
     public String sayHello(httpRequest request) {
-        return "Hello, World!";
     }
-
     @customPost("/data")
     public String processData(httpRequest request) {
-        return "Data processed";
     }
     @customGet("/get/student")
     public List<responseBody> getstudent() {
-        List <responseBody> student = new ArrayList<>();
-        student.add(new responseBody("ezedin",10));
-        student.add(new responseBody("john",104));
-        student.add(new responseBody("bob",140));
-        return student;
-
+    }
+    @customPost("/student/register")
+    public resposeBody create(@customRequestBody("student") Student student){
+        
     }
 }
 ```
