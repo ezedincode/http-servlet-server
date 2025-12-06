@@ -93,8 +93,6 @@ public class dispatcher {
                 }
             }
         }
-        System.out.println(routeMethods);
-        System.out.println(controllers);
     }
     private Object createInstance(Class<?> cls){
         try{

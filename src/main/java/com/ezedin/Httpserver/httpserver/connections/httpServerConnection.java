@@ -8,14 +8,12 @@ import com.ezedin.Httpserver.httpserver.models.HttpMethod;
 import java.io.*;
 import java.net.Socket;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import com.ezedin.Httpserver.httpserver.models.HttpStatus;
 import com.ezedin.Httpserver.servlet.dispatcher;
 
 public class httpServerConnection extends Thread {
     private final Socket socket;
-    private final Logger logger = Logger.getLogger(this.getName());
     private final dispatcher dispatcher;
 
     public httpServerConnection(Socket socket,dispatcher dispatchers) {
@@ -28,12 +26,12 @@ public class httpServerConnection extends Thread {
         try{
                 var inputStream = socket.getInputStream();
                 var outputStream = socket.getOutputStream();
-                var bufferdReader = new BufferedReader(new InputStreamReader(inputStream));
+                var bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 var bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
 
             String inputLine;
             var startLine = "";
-            while ((startLine = bufferdReader.readLine()) != null) {
+            while ((startLine = bufferedReader.readLine()) != null) {
                 if (!startLine.isBlank()) break;
             }
 
@@ -43,7 +41,7 @@ public class httpServerConnection extends Thread {
             }
 
             var request = httpDataUtil.parseBasicHttpRequest(startLine);
-            while((inputLine = bufferdReader.readLine()) != null && !(inputLine.isEmpty())){
+            while((inputLine = bufferedReader.readLine()) != null && !(inputLine.isEmpty())){
                 var data = inputLine.split(": ");
                 request.headers().put(data[0], data[1]);
             }
@@ -51,10 +49,9 @@ public class httpServerConnection extends Thread {
                 var size = Integer.parseInt(request.headers().getOrDefault("Content-Length", "0"));
                 var inputStringBuilder = new StringBuilder();
                 for(int i = 0; i < size; i++){
-                    inputStringBuilder.append((char)bufferdReader.read());
+                    inputStringBuilder.append((char)bufferedReader.read());
                 }
                 request = httpRequest.withBody(request, inputStringBuilder.toString());
-                System.out.println(request);
             }
             Object  body;
             if(Objects.equals(request.headers().get("Content-Type"), "application/json")){
