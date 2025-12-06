@@ -1,5 +1,4 @@
-package com.ezedin.Httpserver.servlet;
-
+package com.ezedin.Httpserver.servlet.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface customController {
-
+@Target(ElementType.METHOD)
+public @interface customGet {
+    String value();
 }

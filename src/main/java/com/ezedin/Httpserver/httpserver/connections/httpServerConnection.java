@@ -7,6 +7,7 @@ import com.ezedin.Httpserver.httpserver.models.HttpMethod;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.ezedin.Httpserver.httpserver.models.HttpStatus;
@@ -58,9 +59,17 @@ public class httpServerConnection extends Thread {
                     inputStringBuilder.append((char)bufferdReader.read());
                 }
                 request = httpRequest.withBody(request, inputStringBuilder.toString());
+                System.out.println(request);
+            }
+            Object  body;
+            if(Objects.equals(request.headers().get("Content-Type"), "application/json")){
+                System.out.println("yes it is json");
+                body = dispatcher.dispatch(request,"json");
+            }
+            else {
+                body = dispatcher.dispatch(request,"text");
             }
 
-            var body = dispatcher.dispatch(request.httpMethod(), request.Path());
             System.out.println(body);
 
             httpResponse response;
