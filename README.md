@@ -8,6 +8,33 @@ A lightweight, multi-threaded HTTP server implementation in Java, designed to ha
 - **Custom Parsing**: Implements custom logic for parsing HTTP requests and generating responses.
 - **Dispatcher System**: Routes requests to appropriate handlers based on the request path and method.
 - **Robustness**: Gracefully handles empty connections and health checks.
+- **JSON Support**: Automatically maps JSON request bodies to method parameters.
+
+
+## Installation
+
+To use this library, you need to add the JitPack repository and the dependency to your `pom.xml`.
+
+### Add the Repository
+
+```xml
+<repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+</repositories>
+```
+
+### Add the Dependency
+
+```xml
+<dependency>
+	<groupId>com.github.ezedincode</groupId>
+	<artifactId>http-servlet-server</artifactId>
+	<version>-44d2d43ffa-1</version>
+</dependency>
+```
 
 ## Usage
 
@@ -31,6 +58,7 @@ public class App {
 - **httpServerConnection**: Handles individual client connections on separate threads.
 - **dispatcher**: Scans the base package and dispatches requests to the appropriate methods.
 - **httpRequest / httpResponse**: Models for HTTP data.
+- **httpDataUtil**: Utility for parsing HTTP requests.
 
 ## Requirements
 
@@ -40,23 +68,22 @@ public class App {
 To create a controller, annotate your class with `@customController` and your methods with `@customGet` or `@customPost`.
 
 ```java
-
 @customController
 public class MyController {
 
     @customGet("/hello")
-    public String sayHello(httpRequest request) {
+    public String sayHello() {
+        return "Hello World";
     }
+
     @customPost("/data")
-    public String processData(httpRequest request) {
+    public String processData() {
+        return "Data Processed";
     }
-    @customGet("/get/student")
-    public List<responseBody> getstudent() {
-    }
+
     @customPost("/student/register")
-    public resposeBody create(@customRequestBody("student") Student student){
-        
+    public String create(@customRequestBody("name") String name, @customRequestBody("age") int age){
+        return "Registered: " + name;
     }
 }
 ```
-

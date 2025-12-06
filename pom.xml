@@ -1,32 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ezedin</groupId>
-	<artifactId>Httpserver</artifactId>
+	<artifactId>httpserver</artifactId>
 	<version>1.0.0</version>
 	<name>Httpserver</name>
-	<description>custom http server</description>
-	<url/>
+	<description>Custom HTTP Server</description>
+	<url>https://github.com/ezedincode/http-servlet-server</url>
+
 	<licenses>
-		<license/>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+		</license>
 	</licenses>
-	<developers>
-		<developer/>
-	</developers>
+
+
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:git://github.com/ezedincode/http-servlet-server.git</connection>
+		<developerConnection>scm:git:ssh://github.com/ezedincode/http-servlet-server.git</developerConnection>
+		<url>https://github.com/ezedincode/http-servlet-server</url>
+		<tag>HEAD</tag>
 	</scm>
+	<developers>
+		<developer>
+			<id>ezedincode</id>
+			<name>Ezedin Ahmed</name>
+			<email>ezedinahmed2021@example.com</email>
+		</developer>
+	</developers>
+
+
 	<distributionManagement>
 		<repository>
 			<id>github</id>
-			<url>https://maven.pkg.github.com/ezedincode/http-servlet-server</url>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/ezedincode/http-servlet-server/</url>
 		</repository>
 	</distributionManagement>
+
 	<properties>
 		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
@@ -42,12 +58,12 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.17.2</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
 		<plugins>
+
+			<!-- Compiler plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -57,6 +73,37 @@
 					<target>17</target>
 				</configuration>
 			</plugin>
+
+			<!-- Source JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Javadoc JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.5.0</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
