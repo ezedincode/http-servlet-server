@@ -1,5 +1,6 @@
 package com.ezedin.Httpserver;
 
+import com.ezedin.Httpserver.Ioc.beanScanner;
 import com.ezedin.Httpserver.httpserver.connectionUtil.httpConnectionUtil;
 import com.ezedin.Httpserver.httpserver.connections.httpServerConnection;
 import com.ezedin.Httpserver.servlet.dispatcher;
@@ -26,7 +27,8 @@ public class HttpServletServer {
 
 	public void start() throws IOException {
 		var serverSocket = httpConnectionUtil.createHttpServerSocket(port);
-		dispatcher dispatchers = new dispatcher(basePackage);
+        beanScanner scanner = new beanScanner(basePackage);
+		dispatcher dispatchers = new dispatcher(scanner);
 
 		ExecutorService pool = Executors.newFixedThreadPool(50);
 
