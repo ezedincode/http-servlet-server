@@ -47,7 +47,7 @@ public class BeanFactory {
         Object[] newParameterTypes = new Object[parameterTypes.length];
         int i = 0;
         for (Class<?> parameter : parameterTypes) {
-            if(!beanDefinitions.contains(parameter)) {
+            if(beanDefinitions.stream().noneMatch(beanDefinition -> beanDefinition.getBeanClass().equals(parameter))) {
                 throw new IllegalStateException();
             }
             if (beanDefinitionMap.containsKey(parameter)) {
