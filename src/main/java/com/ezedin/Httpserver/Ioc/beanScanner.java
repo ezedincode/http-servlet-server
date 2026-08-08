@@ -1,14 +1,13 @@
 package com.ezedin.Httpserver.Ioc;
 
-import com.ezedin.Httpserver.httpserver.httpRequest;
 import com.ezedin.Httpserver.servlet.annotations.customController;
 import com.ezedin.Httpserver.servlet.annotations.customGet;
 import com.ezedin.Httpserver.servlet.annotations.customPost;
 import com.ezedin.Httpserver.servlet.annotations.customRequestBody;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ezedin.Httpserver.servlet.annotations.customService;
 import org.reflections.Reflections;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -21,6 +20,12 @@ import java.util.Set;
 public class beanScanner {
     private final Map<String, Method> controllerMethods = new HashMap<>();
     private final Map<String, Object> controllers = new HashMap<>();
+    private List<BeanDefinition> beanDefinitions = new ArrayList<>();
+
+    List<Class<? extends Annotation>> annotations = List.of(
+            customService.class,
+            customController.class
+    );
 
     public Map<String, Method> getControllerMethods() {
         return controllerMethods;
@@ -68,6 +73,15 @@ public class beanScanner {
                 }
             }
         }
+    }
+
+    private void scanBean(String basePackage) {
+        Reflections reflections = new Reflections(basePackage);
+        beanDefinitions = List.copyOf(annotations.stream()
+                .flatMap(annotation -> reflections.getTypesAnnotatedWith(annotation).stream())
+                .distinct()
+                .map(BeanDefinition::new)
+                .toList());
     }
 
     private Object createInstance(Class<?> cls) {
