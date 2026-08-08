@@ -21,6 +21,7 @@ public class beanScanner {
     private final Map<String, Method> controllerMethods = new HashMap<>();
     private final Map<String, Object> controllers = new HashMap<>();
     private List<BeanDefinition> beanDefinitions = new ArrayList<>();
+    private final ApplicationContext applicationContext;
 
     List<Class<? extends Annotation>> annotations = List.of(
             customService.class,
@@ -36,6 +37,8 @@ public class beanScanner {
     }
 
     public beanScanner(String basePackage) {
+        scanBean(basePackage);
+        applicationContext = new ApplicationContext(beanDefinitions);
         scanController(basePackage);
     }
 
@@ -57,14 +60,14 @@ public class beanScanner {
             Object instance = null;
             for (Method method : clazz.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(customGet.class)) {
-                    if (instance == null) instance = createInstance(clazz);
+                    if (instance == null) instance = applicationContext.getBean(clazz);
                     String path = method.getAnnotation(customGet.class).value();
                     String key = "GET:" + path;
                     controllerMethods.put(key, method);
                     controllers.put(key, instance);
                 }
                 if (method.isAnnotationPresent(customPost.class)) {
-                    if (instance == null) instance = createInstance(clazz);
+                    if (instance == null) instance = applicationContext.getBean(clazz);
 
                     String path = method.getAnnotation(customPost.class).value();
                     String key = "POST:" + path;
@@ -84,13 +87,4 @@ public class beanScanner {
                 .toList());
     }
 
-    private Object createInstance(Class<?> cls) {
-        try {
-            Constructor<?> constructor = cls.getDeclaredConstructor();
-            constructor.setAccessible(true);
-            return constructor.newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

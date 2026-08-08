@@ -1,17 +1,15 @@
 package com.ezedin.Httpserver.Ioc;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class ApplicationContext {
-    private final Map<Class<?>, Object> beanDefinitions = new HashMap<Class<?>, Object>();
+    private final BeanFactory beanFactory;
 
-    public ApplicationContext(Map<Class<?>, Object> beanDefinitions ) {
-        this.beanDefinitions.putAll(beanDefinitions);
-
+    public ApplicationContext(List<BeanDefinition> beanDefinitions) {
+        this.beanFactory = new BeanFactory(beanDefinitions);
     }
 
-    public Map<Class<?>, Object> getBeanDefinitions() {
-        return beanDefinitions;
+    public <T> T getBean(Class<T> type) {
+        return beanFactory.getBean(type);
     }
 }

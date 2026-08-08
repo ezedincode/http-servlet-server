@@ -12,15 +12,22 @@ todo
  */
 public class BeanFactory {
     private final List<BeanDefinition> beanDefinitions;
-    private final ApplicationContext applicationContext;
     private final Map<Class<?>, Object> beanDefinitionMap = new HashMap<Class<?>, Object>();
 
     public BeanFactory(List<BeanDefinition> beanFactory) {
         this.beanDefinitions = beanFactory;
         feeder();
-        applicationContext = new ApplicationContext(beanDefinitionMap);
     }
 
+    public <T> T getBean(Class<T> type) {
+        Object bean = beanDefinitionMap.get(type);
+
+        if (bean == null) {
+            throw new RuntimeException("No bean found: " + type.getName());
+        }
+
+        return type.cast(bean);
+    }
     public void feeder() {
         for (BeanDefinition beanDefinition : beanDefinitions) {
             createBeans(beanDefinition.getBeanClass());
