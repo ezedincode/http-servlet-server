@@ -25,7 +25,12 @@ public record httpResponse(
         header = Objects.requireNonNullElse(header, new HashMap<>());
         if (body != null && !(body instanceof String)) {
             header.put("Content-Type", "json");
-            header.put("Content-Length", String.valueOf(body.toString().length()));
+            try {
+                String json = new ObjectMapper().writeValueAsString(body);
+                header.put("Content-Length", String.valueOf(json.length()));
+            } catch (Exception e) {
+                header.put("Content-Length", "0");
+            }
         } else {
             header.put("Content-Type", "text/plain");
             header.put("Content-Length", String.valueOf(body.toString().length()));
@@ -46,10 +51,10 @@ public record httpResponse(
             if (!(body instanceof String)) {
                 ObjectMapper mapper = new ObjectMapper();
                 String jsonBody = mapper.writeValueAsString(body);
-                strBuilder.append(String.format("%s\r\n", jsonBody));
+                strBuilder.append(jsonBody);
                 return strBuilder.toString();
             }
-            strBuilder.append(String.format("%s\r\n", body));
+            strBuilder.append(body);
         }
 
         return strBuilder.toString();

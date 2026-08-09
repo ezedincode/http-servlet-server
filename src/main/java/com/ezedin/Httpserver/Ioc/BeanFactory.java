@@ -1,7 +1,6 @@
 package com.ezedin.Httpserver.Ioc;
 
 import java.lang.reflect.Constructor;
-import java.rmi.UnexpectedException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class BeanFactory {
         int i = 0;
         for (Class<?> parameter : parameterTypes) {
             if(beanDefinitions.stream().noneMatch(beanDefinition -> beanDefinition.getBeanClass().equals(parameter))) {
-                throw new IllegalStateException();
+                throw new IllegalStateException("unsatisfied dependency could not find: " + parameter.getName());
             }
             if (beanDefinitionMap.containsKey(parameter)) {
                 newParameterTypes[i] = beanDefinitionMap.get(parameter);
